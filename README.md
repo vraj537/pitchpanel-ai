@@ -150,11 +150,3 @@ requirements.txt
   responses as context.
 - Each user is capped at `DAILY_PITCH_LIMIT` (default 3) pitches per
   rolling 24 hours — enforced server-side in `panel/views.py`.
-
-### What changed from the original template
-- Removed: fake "trusted by" logos, pricing/plans section, fake
-  blog/resources, fake testimonials/stats, generic "industry solutions"
-  content, and the file-upload/share/export buttons in the chat UI that
-  didn't actually do anything.
-- Kept & rewrote with real copy: hero, "How it works", FAQ, footer,
-  and a single clear sign-up CTA.
