@@ -1,3 +1,14 @@
+<div align="center">
+  <img src="static/images/readme-banner.svg" alt="PitchPanel Ai" width="900">
+
+  <p>
+    <img src="https://img.shields.io/badge/Django-5.x-0b0b14?style=for-the-badge&logo=django&logoColor=white&labelColor=0b0b14&color=6657C3" alt="Django">
+    <img src="https://img.shields.io/badge/Database-Supabase%20Postgres-0b0b14?style=for-the-badge&logo=supabase&logoColor=white&labelColor=0b0b14&color=6657C3" alt="Supabase">
+    <img src="https://img.shields.io/badge/AI-Gemini%20Flash--Lite-0b0b14?style=for-the-badge&logo=googlegemini&logoColor=white&labelColor=0b0b14&color=6657C3" alt="Gemini">
+    <img src="https://img.shields.io/badge/Deploy-Vercel-0b0b14?style=for-the-badge&logo=vercel&logoColor=white&labelColor=0b0b14&color=6657C3" alt="Vercel">
+  </p>
+</div>
+
 # PitchPanel Ai (Django)
 
 Get your startup idea reviewed by an AI panel — an **Investor**, a **Skeptical
