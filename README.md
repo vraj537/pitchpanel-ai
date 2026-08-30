@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="static/images/readme-banner.svg" alt="PitchPanel Ai" width="900">
+  <img src="./readme-banner.svg" alt="PitchPanel Ai" width="900">
 
   <p>
     <img src="https://img.shields.io/badge/Django-5.x-0b0b14?style=for-the-badge&logo=django&logoColor=white&labelColor=0b0b14&color=6657C3" alt="Django">
