@@ -1,0 +1,36 @@
+{% load static %}
+<nav class="navbar navbar-expand-xl position-fixed w-100">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'core:index' %}">
+      <img src="{% static 'images/logo.png' %}" alt="PitchPanel Ai" width="172" height="44" class="d-none d-sm-block">
+      <img src="{% static 'images/logo-sm.png' %}" alt="PitchPanel Ai" width="40" height="40" class="d-sm-none d-block">
+    </a>
+    <div class="d-xl-none d-flex justify-content-center align-items-center gap-2 gap-md-3 py-xl-0 py-2">
+      {% if user.is_authenticated %}
+        <a class="nav-link text-white fw-bold" href="{% url 'accounts:logout' %}" role="button">Logout</a>
+        <a class="btn btn-sm btn-purple-gradient" href="{% url 'panel:ai_chat' %}" role="button">Pitch Chat</a>
+      {% else %}
+        <a class="nav-link text-white fw-bold" href="{% url 'accounts:login' %}" role="button">Login</a>
+        <a class="btn btn-sm btn-purple-gradient" href="{% url 'accounts:signup' %}" role="button">Get Started</a>
+      {% endif %}
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ri-menu-add-fill"></i></button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'core:index' %}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'panel:ai_chat' %}">Pitch Chat <span class="ms-2 badge bg-primary rounded-pill">AI</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'core:faq' %}">FAQ</a></li>
+        <li class="nav-item mb-xl-0 mb-4"><a class="nav-link" href="{% url 'core:contact' %}">Contact Us</a></li>
+      </ul>
+      <ul class="navbar-nav d-none d-xl-flex align-items-center">
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link text-white fw-bold" href="{% url 'accounts:logout' %}" role="button">Logout</a></li>
+          <li><a class="btn btn-sm btn-purple-gradient" href="{% url 'panel:ai_chat' %}" role="button">Pitch Chat</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link text-white fw-bold" href="{% url 'accounts:login' %}" role="button">Login</a></li>
+          <li><a class="btn btn-sm btn-purple-gradient" href="{% url 'accounts:signup' %}" role="button">Get Started</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

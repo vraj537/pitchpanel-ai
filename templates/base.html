@@ -1,0 +1,22 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}PitchPanel Ai{% endblock %}</title>
+<meta name="description" content="{% block description %}Get your startup idea reviewed by an AI panel — an Investor, a Skeptical Customer and a Competitor — before you build it.{% endblock %}">
+{% include 'includes/head_assets.html' %}
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+<canvas id="bg-stars"></canvas>
+<div id="bg-blur" aria-hidden="true"></div>
+<canvas id="orb-bg"></canvas>
+{% include 'includes/navbar.html' %}
+<div class="page-wrapper">
+{% block content %}{% endblock %}
+</div>
+{% include 'includes/footer.html' %}
+{% include 'includes/scripts.html' %}
+{% block extra_js %}{% endblock %}
+</body>
+</html>

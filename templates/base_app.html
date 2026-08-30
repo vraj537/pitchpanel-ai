@@ -1,0 +1,17 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}Pitch Chat | PitchPanel Ai{% endblock %}</title>
+{% include 'includes/head_assets.html' %}
+</head>
+<body>
+<canvas id="bg-stars"></canvas>
+<div id="bg-blur" aria-hidden="true"></div>
+<canvas id="orb-bg"></canvas>
+{% include 'includes/navbar.html' %}
+{% block content %}{% endblock %}
+{% include 'includes/scripts.html' %}
+{% block extra_js %}{% endblock %}
+</body>
+</html>

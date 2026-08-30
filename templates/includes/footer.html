@@ -1,0 +1,45 @@
+{% load static %}
+<footer class="footer-premium">
+  <div class="footer-ambient-glow"></div>
+  <div class="footer-ambient-glow glow-right"></div>
+  <div class="footer-watermark">PITCHPANEL AI</div>
+  <div class="container pb-4">
+    <div class="row mb-5 justify-content-between position-relative z-1">
+      <div class="col-lg-5 mb-5 mb-lg-0">
+        <div class="pe-lg-4 text-center text-lg-start">
+          <img alt="Logo" class="mb-4 drop-shadow-sm" height="50" src="{% static 'images/logo.png' %}">
+          <p class="text-white-50 mb-4 fs-15 lh-lg">Get your startup idea reviewed by an AI panel — an Investor, a Skeptical Customer and a Competitor — before you build it.</p>
+          <div class="d-flex flex-column gap-3 mb-4 text-start align-items-center align-items-lg-start">
+            <a class="text-white-50 text-decoration-none hover-text-white transition-all d-flex align-items-center gap-2" href="mailto:vraj537github@gmail.com"><i class="ri-mail-send-line text-primary fs-5"></i> vraj537github@gmail.com</a>
+            <div class="social-dock">
+              <a class="social-icon-creative" href="https://github.com/vraj537" target="_blank" rel="noopener"><i class="ri-github-fill"></i></a>
+              <a class="social-icon-creative" href="https://linkedin.com/in/vraj537" target="_blank" rel="noopener"><i class="ri-linkedin-fill"></i></a>
+              <a class="social-icon-creative" href="https://instagram.com/vraj537" target="_blank" rel="noopener"><i class="ri-instagram-line"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-6 col-sm-6 mb-4 mb-sm-0">
+            <h6 class="mb-4 text-white fw-bold letter-spacing-1 text-uppercase fs-12 opacity-75">Navigate</h6>
+            <ul class="footer-link-list">
+              <li><a class="footer-link" href="{% url 'core:index' %}">Home</a></li>
+              <li><a class="footer-link" href="{% url 'panel:ai_chat' %}">Pitch Chat</a></li>
+              <li><a class="footer-link" href="{% url 'core:faq' %}">FAQ</a></li>
+              <li><a class="footer-link" href="{% url 'core:contact' %}">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="border-top border-light border-opacity-10 my-0 position-relative z-1"></div>
+    <div class="row pt-4 pb-2 position-relative z-1">
+      <div class="col-12">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-center gap-3">
+          <p class="text-center text-white-50 fs-14 mb-0">© <script>document.write(new Date().getFullYear());</script> <span class="text-white fw-medium">PitchPanel Ai</span>. Built by <a class="text-white-50 text-decoration-none hover-text-white transition-all" href="https://github.com/vraj537" rel="noopener" target="_blank">Vraj</a>. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

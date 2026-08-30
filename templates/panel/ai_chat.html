@@ -1,0 +1,78 @@
+{% extends 'base_app.html' %}
+{% load static %}
+{% block title %}Pitch Chat | PitchPanel Ai{% endblock %}
+{% block content %}
+<div class="ai-chat-layout overflow-hidden position-relative d-flex bg-dark-bold z-3">
+  <div class="offcanvas-lg offcanvas-start ai-chat-sidebar h-100 flex-shrink-0 d-flex flex-column border-end border-light border-opacity-10" tabindex="-1" id="chatSidebarOffcanvas" aria-labelledby="chatSidebarLabel">
+    <div class="offcanvas-header border-bottom border-light border-opacity-10 d-lg-none">
+      <h5 class="offcanvas-title text-white fw-bold" id="chatSidebarLabel">Chat History</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#chatSidebarOffcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column p-0 h-100">
+      <div class="p-4 border-bottom border-light border-opacity-10">
+        <button class="btn btn-purple-gradient w-100 d-flex justify-content-center align-items-center gap-2 rounded-pill py-2 shadow-sm btn-new-chat" onclick="startNewChat()"><i class="ri-add-line fs-5"></i> New Chat</button>
+      </div>
+      <div class="chat-history-list flex-grow-1 overflow-y-auto p-4 pt-0 mt-3" data-lenis-prevent id="chatHistoryList">
+        {% for pitch in history %}
+        <a href="#" class="chat-history-item" data-pitch-id="{{ pitch.id }}" data-url="{% url 'panel:pitch_detail' pitch.id %}"><i class="ri-chat-3-line me-2"></i> {{ pitch.idea|truncatechars:34 }}</a>
+        {% empty %}
+        <p class="text-muted fs-13 text-center mt-4" id="historyEmptyMsg">No pitches validated yet.<br>Submit an idea to get started!</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="flex-grow-1 d-flex flex-column h-100 w-100 overflow-hidden position-relative">
+    <div class="ai-chat-header d-flex justify-content-between align-items-center gap-2 px-3 px-md-4 py-3 flex-shrink-0 position-relative z-3 border-bottom border-light border-opacity-10">
+      <div class="d-flex align-items-center gap-3" style="min-width: 0;">
+        <button class="avatar avatar-md rounded-2 avatar-light d-lg-none flex-shrink-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatSidebarOffcanvas"><i class="ri-menu-line"></i></button>
+        <div class="avatar avatar-sm rounded-circle bg-primary bg-opacity-10 d-none d-sm-flex align-items-center justify-content-center border border-primary border-opacity-25 flex-shrink-0"><i class="ri-robot-3-fill text-primary fs-5"></i></div>
+        <div style="min-width: 0;">
+          <div class="d-flex align-items-center gap-2 mb-1"><h5 class="text-white mb-0 fs-15 fw-bold text-truncate" id="chatHeaderTitle">New Pitch</h5></div>
+          <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2 bg-dark bg-opacity-50 border border-light border-opacity-10 rounded-pill px-3 py-1" style="backdrop-filter: blur(8px);"><i class="ri-team-fill text-primary"></i><span class="fs-12 fw-medium text-white">3-Agent AI Panel</span></div>
+            <span class="text-muted fs-10">|</span>
+            <span class="d-flex align-items-center gap-1 fs-12 text-muted"><span class="pulse-dot bg-success" style="width: 6px; height: 6px;"></span> {{ daily_limit }}/day limit</span>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-1 gap-sm-2 flex-shrink-0">
+        <div class="dropdown">
+          <button class="avatar avatar-md rounded-2 avatar-light" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false"><i class="ri-more-2-fill"></i></button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#" onclick="startNewChat();return false;"><i class="ri-add-line me-2"></i>New Pitch</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}"><i class="ri-logout-box-r-line me-2"></i>Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ai-chat-messages flex-grow-1 overflow-y-auto" id="chatContainer" data-lenis-prevent>
+      <div class="container-fluid max-w-800px mx-auto" id="chatMessageList">
+        <div id="emptyChatState" class="text-center py-5 mt-5">
+          <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 border border-primary border-opacity-25 rounded-circle mb-4 empty-chat-icon"><i class="ri-robot-2-line text-primary fs-1"></i></div>
+          <h4 class="text-white fw-bold mb-2">Pitch your idea to the AI panel</h4>
+          <p class="text-muted">Describe your startup or project idea below — our Investor, Customer &amp; Competitor agents will review it.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ai-chat-input-area position-absolute start-50 translate-middle-x z-3 w-100">
+      <div class="chat-input-wrapper">
+        <textarea class="chat-input" id="chatInput" rows="1" placeholder="Describe your startup idea, product or pitch..." data-lenis-prevent></textarea>
+        <button class="btn-send ms-2" id="sendBtn" title="Send Message"><i class="ri-send-plane-fill"></i></button>
+      </div>
+      <div class="text-center mt-2">
+        <span class="fs-11 text-muted chat-disclaimer-text">Your idea is reviewed by 3 AI personas — Investor, Customer &amp; Competitor. Max {{ daily_limit }} pitches / 24 hrs.</span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+  window.PITCHPANEL_CONFIG = {
+    submitUrl: "{% url 'panel:submit_pitch' %}",
+    csrfToken: "{{ csrf_token }}",
+  };
+</script>
+<script src="{% static 'js/ai-chat.js' %}"></script>
+{% endblock %}

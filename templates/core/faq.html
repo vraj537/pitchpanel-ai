@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}FAQ | PitchPanel Ai{% endblock %}
+{% block content %}
+<section class="faq-hero-section">
+  <div class="container position-relative z-1">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 text-center">
+        <p class="text-primary fs-12 fw-bold text-uppercase ls-3" data-aos="fade-up">/ Help</p>
+        <h1 class="fs-60 fs-md-80 fs-xl-100 fw-bolder lh-1 text-break mb-4" data-aos="fade-up" data-aos-duration="1400">Frequently Asked<span class="text-gradient d-block">Questions.</span></h1>
+        <h5 class="text-muted fw-normal w-75 mx-auto" data-aos="fade-up" data-aos-duration="1800">Everything about how PitchPanel Ai works, your data, and using the AI panel.</h5>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="accordion custom-accordion" id="faqAccordion">
+          {% for section in faq_sections %}
+          <h4 class="mb-4 {% if not forloop.first %}mt-5{% endif %} text-white">{{ section.category }}</h4>
+          {% for question, answer in section.items %}
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading-{{ forloop.parentloop.counter }}-{{ forloop.counter }}">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ forloop.parentloop.counter }}-{{ forloop.counter }}" aria-expanded="false">{{ question }}</button>
+            </h2>
+            <div id="collapse-{{ forloop.parentloop.counter }}-{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted">{{ answer }}</div>
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section pt-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="card text-center cta-card" data-aos="fade-up" data-aos-duration="1000">
+          <div class="card-body py-md-50 py-lg-80 px-lg-5 position-relative z-3">
+            <h2 class="fw-bold">Still have questions?</h2>
+            <h5 class="text-muted mb-4 fw-normal">Reach out and we'll get back to you.</h5>
+            <a href="{% url 'core:contact' %}" class="btn btn-lg btn-purple-gradient rounded-pill">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

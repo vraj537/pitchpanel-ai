@@ -1,0 +1,43 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+{% block title %}Login | PitchPanel Ai{% endblock %}
+{% block content %}
+<div class="auth-page py-4 px-3 hero-bg-effect">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
+        <div class="auth-card-wrapper">
+          <div class="card auth-card mb-0" id="vaultCard">
+            <div class="card-body p-md-5">
+              <div class="avatar avatar-xxl avatar-primary mx-auto rounded-4"><img src="{% static 'images/logo-sm.png' %}" alt="" height="55"></div>
+              <div class="text-center">
+                <p class="text-uppercase fw-bolder ls-3 mt-4">Welcome Back</p>
+                <div class="badge-glass badge bg-soft-primary fs-12 py-2 px-3 text-uppercase rounded-pill mb-4 d-inline-flex align-items-center gap-2 mx-auto" data-aos="fade-up" data-aos-duration="1200">
+                  <span class="pulse-dot bg-primary"></span> Encrypted Session
+                </div>
+              </div>
+              {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+              <form class="my-4 pt-3 auth-form" method="post">
+                {% csrf_token %}
+                <div class="mb-40">
+                  <label for="id_email" class="form-label text-uppercase fs-12 ls-3 opacity-50 mb-0">Email</label>
+                  <input type="email" name="email" class="form-control" id="id_email" placeholder="you@example.com" required>
+                </div>
+                <div class="mb-30">
+                  <label for="id_password" class="form-label text-uppercase fs-12 ls-3 opacity-50 mb-0">Password</label>
+                  <input type="password" name="password" class="form-control" id="id_password" placeholder="••••••••" required>
+                </div>
+                <div class="d-flex flex-wrap align-items-center justify-content-end gap-3 mb-4">
+                  <a href="{% url 'accounts:password_reset' %}" class="text-uppercase fs-12 ls-3">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn btn-soft-light w-100 text-uppercase ls-3 fs-15">Login <i class="ri-login-circle-line btn-icon-anim ms-2"></i></button>
+              </form>
+              <p class="text-center text-uppercase fs-12 ls-2 mb-0"><span class="opacity-50">New Here?</span> <a href="{% url 'accounts:signup' %}" class="ps-1">Create Account</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
