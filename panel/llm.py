@@ -1,18 +1,19 @@
 """
-Calls the Gemini API 4 times with different persona system prompts —
-Investor, Skeptical Customer, Competitor, and a final Verdict — to
-review a startup/project idea. Ported from the original
-api/validate-pitch.js Vercel function, using `requests` instead of fetch.
+Calls a Hugging Face-hosted instruct model 4 times with different persona
+system prompts — Investor, Skeptical Customer, Competitor, and a final
+Verdict — to review a startup/project idea.
 
-Uses GEMINI_MODEL (default: gemini-3.1-flash-lite) — the current
-free-tier "lite" model, chosen for its much higher daily request quota
-compared to the full Flash/Pro models, since each pitch uses 4 calls.
+Uses Hugging Face's OpenAI-compatible chat-completions router
+(https://router.huggingface.co/v1/chat/completions), which works with a
+free Hugging Face account + a "read" access token — no billing needed.
 """
 
 from concurrent.futures import ThreadPoolExecutor
 
 import requests
 from django.conf import settings
+
+HF_API_URL = "https://router.huggingface.co/v1/chat/completions"
 
 PERSONAS = {
     "investor": (
@@ -45,34 +46,40 @@ VERDICT_PERSONA = (
 )
 
 
-class GeminiError(Exception):
+class LLMError(Exception):
     pass
 
 
-def _call_gemini(system_instruction: str, user_prompt: str, max_tokens: int = 350) -> str:
-    api_key = settings.GEMINI_API_KEY
-    if not api_key:
-        raise GeminiError("GEMINI_API_KEY is not configured on the server.")
+def _call_hf(system_instruction: str, user_prompt: str, max_tokens: int = 350) -> str:
+    token = settings.HF_API_TOKEN
+    if not token:
+        raise LLMError("HF_API_TOKEN is not configured on the server.")
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{settings.GEMINI_MODEL}:generateContent"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+    }
     payload = {
-        "contents": [{"role": "user", "parts": [{"text": user_prompt}]}],
-        "systemInstruction": {"parts": [{"text": system_instruction}]},
-        "generationConfig": {"maxOutputTokens": max_tokens, "temperature": 0.8},
+        "model": settings.HF_MODEL,
+        "messages": [
+            {"role": "system", "content": system_instruction},
+            {"role": "user", "content": user_prompt},
+        ],
+        "max_tokens": max_tokens,
+        "temperature": 0.8,
     }
 
     try:
-        resp = requests.post(url, params={"key": api_key}, json=payload, timeout=30)
+        resp = requests.post(HF_API_URL, headers=headers, json=payload, timeout=45)
     except requests.RequestException as exc:
-        raise GeminiError(f"Could not reach Gemini: {exc}") from exc
+        raise LLMError(f"Could not reach Hugging Face: {exc}") from exc
 
     if not resp.ok:
-        raise GeminiError(f"Gemini error {resp.status_code}: {resp.text[:300]}")
+        raise LLMError(f"Hugging Face error {resp.status_code}: {resp.text[:300]}")
 
     data = resp.json()
     try:
-        parts = data["candidates"][0]["content"]["parts"]
-        text = "".join(p.get("text", "") for p in parts).strip()
+        text = data["choices"][0]["message"]["content"].strip()
     except (KeyError, IndexError, TypeError):
         text = ""
     return text or "(No response generated.)"
@@ -85,7 +92,7 @@ def run_panel(idea: str) -> dict:
 
     with ThreadPoolExecutor(max_workers=3) as executor:
         futures = {
-            key: executor.submit(_call_gemini, persona, idea_prompt, 350)
+            key: executor.submit(_call_hf, persona, idea_prompt, 350)
             for key, persona in PERSONAS.items()
         }
         results = {key: future.result() for key, future in futures.items()}
@@ -97,5 +104,5 @@ def run_panel(idea: str) -> dict:
         f'Competitor feedback:\n{results["competitor"]}\n\n'
         "Based on all three, give the final panel verdict."
     )
-    results["verdict"] = _call_gemini(VERDICT_PERSONA, verdict_prompt, 250)
+    results["verdict"] = _call_hf(VERDICT_PERSONA, verdict_prompt, 250)
     return results

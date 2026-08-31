@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from .gemini import GeminiError, run_panel
+from .llm import LLMError, run_panel
 from .models import Pitch
 
 
@@ -49,7 +49,7 @@ def submit_pitch(request):
 
     try:
         result = run_panel(idea)
-    except GeminiError as exc:
+    except LLMError as exc:
         return JsonResponse({"error": "Failed to validate pitch.", "detail": str(exc)}, status=500)
 
     pitch = Pitch.objects.create(
